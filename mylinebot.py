@@ -69,12 +69,9 @@ def handle_message(event):
 
     rank_result.append("ID: "+str(res["data"]["platformInfo"]['platformUserId']))
     rank_result.append("Level: "+str(res["data"]["segments"][0]["stats"]["level"]["displayValue"]))
-    rank_result.append(
-        "RP: "+str(int(res["data"]["segments"][0]["stats"]["rankScore"]["value"]))
-        +" - "
-        +str(res["data"]["segments"][0]["stats"]["rankScore"]["metadata"]["rankName"]))
+    rank_result.append("RP: "+str(int(res["data"]["segments"][0]["stats"]["rankScore"]["value"]))+" - "+str(res["data"]["segments"][0]["stats"]["rankScore"]["metadata"]["rankName"]))
     rank_result.append("Rank: "+str(res["data"]["segments"][0]["stats"]["rankScore"]["rank"])+"位")
-    #rank_result.append("Percentile: "+str(1000 - res["data"]["segments"][0]["stats"]["rankScore"]["percentile"]*10)+"%")
+    rank_result.append("Percentile: "+str(1000 - res["data"]["segments"][0]["stats"]["rankScore"]["percentile"]*10)+"%")
     rank_result = "\n".join(rank_result)
 
     #print("Kills:",res["data"]["segments"][0]["stats"]["kills"]["displayValue"])
