@@ -16,7 +16,7 @@ import requests
 
 app = Flask(__name__)
 
-#herokuの環境変数に設定された、LINE DevelopersのアクセストークンとChannelSecretを取得するコード
+#Set API keys
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
