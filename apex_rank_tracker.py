@@ -16,16 +16,15 @@ import requests
 
 app = Flask(__name__)
 
-#Set API keys
+# LINE Bot API values
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
+# Tracker Network API values
 YOUR_APEX_API_KEY = os.environ["YOUR_APEX_API_KEY"]
-YOUR_APEX_API_SECRET = os.environ["YOUR_APEX_API_SECRET"]
-apex_api_key = YOUR_APEX_API_KEY
-params = {"TRN-Api-Key":YOUR_APEX_API_SECRET}
+params = {"TRN-Api-Key":YOUR_APEX_API_KEY}
 
 #herokuへのデプロイが成功したかどうかを確認するためのコード
 @app.route("/")
@@ -74,8 +73,8 @@ def handle_message(event):
     #rank_result.append("Percentile: "+str(1000 - res["data"]["segments"][0]["stats"]["rankScore"]["percentile"]*10)+"%")
     rank_result = "\n".join(rank_result)
 
-    #print("Kills:",res["data"]["segments"][0]["stats"]["kills"]["displayValue"])
-    #pprint(res["data"]["segments"][0])
+    print("Kills:",res["data"]["segments"][0]["stats"]["kills"]["displayValue"])
+    pprint(res["data"]["segments"][0])
 
     line_bot_api.reply_message(
         event.reply_token,
