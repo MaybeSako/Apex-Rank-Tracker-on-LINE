@@ -26,12 +26,12 @@ handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 YOUR_APEX_API_KEY = os.environ["YOUR_APEX_API_KEY"]
 params = {"TRN-Api-Key":YOUR_APEX_API_KEY}
 
-#herokuへのデプロイが成功したかどうかを確認するためのコード
+# herokuへのデプロイが成功したかどうかを確認するためのコード
 @app.route("/")
 def hello_world():
     return "hello world!"
 
-#LINE DevelopersのWebhookにURLを指定してWebhookからURLにイベントが送られるようにする
+# LINE DevelopersのWebhookにURLを指定してWebhookからURLにイベントが送られるようにする
 @app.route("/callback", methods=['POST'])
 def callback():
     # リクエストヘッダーから署名検証のための値を取得
@@ -48,7 +48,7 @@ def callback():
         abort(400)
     return 'OK'
 
-#以下でWebhookから送られてきたイベントをどのように処理するかを記述する
+# 以下でWebhookから送られてきたイベントをどのように処理するかを記述する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     base_url = "https://public-api.tracker.gg/v2/apex/standard/"
@@ -57,7 +57,7 @@ def handle_message(event):
     req = session.get(base_url+endpoint,params=params)
     req.close()
     res = json.loads(req.text)
-    
+
     # Refining the result from Tracker Network API
     rank_result = []
     player_id = res["data"]["platformInfo"]['platformUserId']
@@ -72,7 +72,7 @@ def handle_message(event):
     rank_result.append("Rank: " + str(player_rank_name))
     rank_result.append("RP: " + str(player_rp))
     rank_result.append("Rank Position: " + str(player_rank_position) + "位")
-    # the value of percentile is occasioanlly returned as None
+    # The value of percentile is occasioanlly returned as None
     if player_percentile is None:
         pass
     else:
