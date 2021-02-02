@@ -51,11 +51,9 @@ def callback():
 # 以下でWebhookから送られてきたイベントをどのように処理するかを記述する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    user_information = event.message.text
-
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=get_stats(user_information))
+        TextSendMessage(text=get_stats(event.message.text))
     )
 
 def get_stats(user_information):
