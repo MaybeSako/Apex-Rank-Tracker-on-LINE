@@ -56,6 +56,7 @@ def handle_message(event):
         TextSendMessage(text=get_stats())
     )
 
+@handler.add(MessageEvent, message=TextMessage)
 def get_stats(event):
     base_url = "https://public-api.tracker.gg/v2/apex/standard/"
     user_information = event.message.text
