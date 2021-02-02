@@ -82,6 +82,11 @@ def handle_message(event):
     rank_result = "\n".join(rank_result)
     print(rank_result)
 
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=event.message.text)
+    )
+
 # ポート番号の設定
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))
