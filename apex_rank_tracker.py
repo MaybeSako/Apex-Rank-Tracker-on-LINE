@@ -23,9 +23,8 @@ line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
 YOUR_APEX_API_KEY = os.environ["YOUR_APEX_API_KEY"]
-YOUR_APEX_API_SECRET = os.environ["YOUR_APEX_API_SECRET"]
 apex_api_key = YOUR_APEX_API_KEY
-params = {"TRN-Api-Key":YOUR_APEX_API_SECRET}
+params = {"TRN-Api-Key":YOUR_APEX_API_KEY}
 
 #herokuへのデプロイが成功したかどうかを確認するためのコード
 @app.route("/")
