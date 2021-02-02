@@ -78,13 +78,11 @@ def handle_message(event):
         pass
     else:
         rank_result.append("RP: " + str(player_percentile))
-
     rank_result = "\n".join(rank_result)
-    print(rank_result)
 
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=event.message.text)
+        TextSendMessage(text=rank_result)
     )
 
 # ポート番号の設定
