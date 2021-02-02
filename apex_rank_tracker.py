@@ -51,21 +51,27 @@ def callback():
 # 以下でWebhookから送られてきたイベントをどのように処理するかを記述する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    # Check if user input is correct
+    if not get_stats(event.message.text):
+        result_message = "Wrong ID, Check your input"
+    else:
+        pass
+        result_message = get_stats(event.message.text)
+
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=get_stats(event.message.text))
+        TextSendMessage(text=result_message)
     )
 
 def get_stats(user_information):
     base_url = "https://public-api.tracker.gg/v2/apex/standard/"
     endpoint = "profile/" + user_information
     session = requests.Session()
-    req = session.get(base_url+endpoint, params=params)
+    req = session.get(base_url + endpoint, params=params)
     req.close()
     res = json.loads(req.text)
 
     # Refine the result from Tracker Network API
-    rank_result = []
     player_id = res["data"]["platformInfo"]['platformUserId']
     player_level = res["data"]["segments"][0]["stats"]["level"]["displayValue"]
     rank_name = res["data"]["segments"][0]["stats"]["rankScore"]["metadata"]["rankName"]
@@ -73,6 +79,7 @@ def get_stats(user_information):
     rank_position = res["data"]["segments"][0]["stats"]["rankScore"]["rank"]
     player_percentile = res["data"]["segments"][0]["stats"]["rankScore"]["percentile"]
 
+    rank_result = []
     rank_result.append("ID: " + str(player_id))
     rank_result.append("Level: " + str(player_level))
     rank_result.append("Rank: " + str(rank_name))
