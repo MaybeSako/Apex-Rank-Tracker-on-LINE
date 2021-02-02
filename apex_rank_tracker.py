@@ -16,22 +16,26 @@ import requests
 
 app = Flask(__name__)
 
-#Set API keys
+# LINE Bot API values
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
+# Tracker Network API values
 YOUR_APEX_API_KEY = os.environ["YOUR_APEX_API_KEY"]
+<<<<<<< HEAD
 apex_api_key = YOUR_APEX_API_KEY
+=======
+>>>>>>> 3abdfc04bb87a80335a2408d3d344d9cab182eff
 params = {"TRN-Api-Key":YOUR_APEX_API_KEY}
 
-#herokuへのデプロイが成功したかどうかを確認するためのコード
+# herokuへのデプロイが成功したかどうかを確認するためのコード
 @app.route("/")
 def hello_world():
     return "hello world!"
 
-#LINE DevelopersのWebhookにURLを指定してWebhookからURLにイベントが送られるようにする
+# LINE DevelopersのWebhookにURLを指定してWebhookからURLにイベントが送られるようにする
 @app.route("/callback", methods=['POST'])
 def callback():
     # リクエストヘッダーから署名検証のための値を取得
@@ -48,38 +52,38 @@ def callback():
         abort(400)
     return 'OK'
 
-#以下でWebhookから送られてきたイベントをどのように処理するかを記述する
+# 以下でWebhookから送られてきたイベントをどのように処理するかを記述する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     base_url = "https://public-api.tracker.gg/v2/apex/standard/"
-    userinfo = event.message.text
     endpoint = "profile/" + userinfo
-    # endpoint = "profile/origin/ユーザーネーム/"
-    rank_result = []
-
     session = requests.Session()
     req = session.get(base_url+endpoint,params=params)
-    print(req.status_code)
-
     req.close()
     res = json.loads(req.text)
-    #pprint(res)
 
-    rank_result.append("ID: "+str(res["data"]["platformInfo"]['platformUserId']))
-    rank_result.append("Level: "+str(res["data"]["segments"][0]["stats"]["level"]["displayValue"]))
-    rank_result.append("Rank: "+str(res["data"]["segments"][0]["stats"]["rankScore"]["metadata"]["rankName"]))
-    rank_result.append("RP: "+str(int(res["data"]["segments"][0]["stats"]["rankScore"]["value"])))
-    rank_result.append("Rank Position: "+str(res["data"]["segments"][0]["stats"]["rankScore"]["rank"])+"位")
-    #rank_result.append("Percentile: "+str(1000 - res["data"]["segments"][0]["stats"]["rankScore"]["percentile"]*10)+"%")
+    # Refining the result from Tracker Network API
+    rank_result = []
+    player_id = res["data"]["platformInfo"]['platformUserId']
+    player_level = res["data"]["segments"][0]["stats"]["level"]["displayValue"]
+    player_rank_name = res["data"]["segments"][0]["stats"]["rankScore"]["metadata"]["rankName"]
+    player_rp = res["data"]["segments"][0]["stats"]["rankScore"]["value"]
+    player_rank_position = res["data"]["segments"][0]["stats"]["rankScore"]["rank"]
+    player_percentile = res["data"]["segments"][0]["stats"]["rankScore"]["percentile"]
+
+    rank_result.append("ID: " + str(player_id))
+    rank_result.append("Level: " + str(player_level))
+    rank_result.append("Rank: " + str(player_rank_name))
+    rank_result.append("RP: " + str(player_rp))
+    rank_result.append("Rank Position: " + str(player_rank_position) + "位")
+    # The value of percentile is occasioanlly returned as None
+    if player_percentile is None:
+        pass
+    else:
+        rank_result.append("RP: " + str(player_percentile))
+
     rank_result = "\n".join(rank_result)
-
-    #print("Kills:",res["data"]["segments"][0]["stats"]["kills"]["displayValue"])
-    #pprint(res["data"]["segments"][0])
-
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=str(rank_result)))
-
+    print(rank_result)
 
 # ポート番号の設定
 if __name__ == "__main__":
