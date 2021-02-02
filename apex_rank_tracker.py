@@ -58,7 +58,7 @@ def handle_message(event):
     req.close()
     res = json.loads(req.text)
 
-    # Refining the result from Tracker Network API
+    # Refine the result from Tracker Network API
     rank_result = []
     player_id = res["data"]["platformInfo"]['platformUserId']
     player_level = res["data"]["segments"][0]["stats"]["level"]["displayValue"]
