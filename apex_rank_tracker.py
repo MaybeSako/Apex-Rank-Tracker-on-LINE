@@ -51,12 +51,12 @@ def handle_message(event):
         result_message = get_stats(str(event.message.text))
     except KeyError:
         result_message = "Invalid input. Make sure your platform and ID are correct."
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=result_message)
-        )
+    except JSONDecodeError:
+        result_message = "Invalid input. Make sure your platform and ID are correct." 
     else:
-        line_bot_api.reply_message(
+        pass
+
+    line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=result_message)
         )
