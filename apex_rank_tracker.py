@@ -39,7 +39,7 @@ def callback():
     # 署名を検証し、問題なければhandleに定義されている関数を呼ぶ
     try:
         handler.handle(body, signature)
-    except json.decoder.JSONDecodeError::
+    except InvalidSignatureError:
         abort(400)
     return 'OK'
 
@@ -51,7 +51,7 @@ def handle_message(event):
         result_message = get_stats(str(event.message.text))
     except KeyError:
         result_message = "Invalid input. Make sure your platform and ID are correct."
-    except JSONDecodeError:
+    except json.decoder.JSONDecodeError:
         result_message = "Invalid input. Make sure your platform and ID are correct." 
     else:
         pass
