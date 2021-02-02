@@ -51,15 +51,15 @@ def callback():
 # 以下でWebhookから送られてきたイベントをどのように処理するかを記述する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    user_information = event.message.text
+
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=get_stats())
+        TextSendMessage(text=get_stats(user_information))
     )
 
-@handler.add(MessageEvent, message=TextMessage)
-def get_stats(event):
+def get_stats(user_information):
     base_url = "https://public-api.tracker.gg/v2/apex/standard/"
-    user_information = event.message.text
     endpoint = "profile/" + user_information
     session = requests.Session()
     req = session.get(base_url+endpoint, params=params)
@@ -84,11 +84,10 @@ def get_stats(event):
     if player_percentile is None:
         pass
     else:
-        rank_result.append("RP: " + str(player_percentile))
+        rank_result.append("RP Percentile: " + str(player_percentile))
     rank_result = "\n".join(rank_result)
 
     return rank_result
-
 
 # ポート番号の設定
 if __name__ == "__main__":
