@@ -86,7 +86,7 @@ def get_stats(user_information):
     rank_result.append("RP: " + str(ranked_point))
     rank_result.append("Rank Position: " + str(rank_position) + "位")
     # The value of percentile is occasioanlly returned as None
-    continue if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
+    rank_result.append("Percentile: Percentile is currently not available") if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
 
     rank_result = "\n".join(rank_result)
     return rank_result
