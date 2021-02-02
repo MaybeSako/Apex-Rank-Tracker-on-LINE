@@ -26,11 +26,6 @@ params = {"TRN-Api-Key":YOUR_APEX_API_KEY}
 
 app = Flask(__name__)
 
-# herokuへのデプロイが成功したかどうかを確認するためのコード
-@app.route("/")
-def hello_world():
-    return "hello world!"
-
 # LINE DevelopersのWebhookにURLを指定してWebhookからURLにイベントが送られるようにする
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -93,13 +88,6 @@ def get_stats(user_information):
 
     rank_result = "\n".join(rank_result)
     return rank_result
-
-try:
-    result_message = get_stats("origin/ssjsakoo")
-except KeyError:
-    result_message = "Wrong input. Check your input"
-else:
-    pass
 
 print(result_message)
 
