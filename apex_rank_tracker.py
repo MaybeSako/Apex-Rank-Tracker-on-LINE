@@ -55,7 +55,7 @@ def handle_message(event):
     try:
         result_message = get_stats(str(event.message.text))
     except KeyError:
-        result_message = "Wrong input. Check your input"
+        result_message = "Invalid input. Make sure your platform and ID are correct."
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=result_message)
@@ -84,12 +84,12 @@ def get_stats(user_information):
 
     rank_result = []
     rank_result.append("ID: " + str(player_id))
-    rank_result.append("Level: " + str(player_level))
-    rank_result.append("Rank: " + str(rank_name))
+    rank_result.append("レベル: " + str(player_level))
+    rank_result.append("ランク帯: " + str(rank_name))
     rank_result.append("RP: " + str(ranked_point))
-    rank_result.append("Rank Position: " + str(rank_position) + "位")
+    rank_result.append("ランクポイント順位: " + str(rank_position) + "位")
     # The value of percentile is occasioanlly returned as None
-    rank_result.append("Percentile: Percentile is currently not available") if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
+    rank_result.append("パーセンタイル: Percentile is currently not available") if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
 
     rank_result = "\n".join(rank_result)
     return rank_result
