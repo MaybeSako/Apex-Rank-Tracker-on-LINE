@@ -39,7 +39,7 @@ def callback():
     # 署名を検証し、問題なければhandleに定義されている関数を呼ぶ
     try:
         handler.handle(body, signature)
-    except InvalidSignatureError:
+    except json.decoder.JSONDecodeError::
         abort(400)
     return 'OK'
 
