@@ -56,6 +56,10 @@ def handle_message(event):
         result_message = get_stats(str(event.message.text))
     except KeyError:
         result_message = "Wrong input. Check your input"
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=result_message)
+        )
     else:
         line_bot_api.reply_message(
             event.reply_token,
