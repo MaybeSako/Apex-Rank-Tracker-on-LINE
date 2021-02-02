@@ -53,7 +53,7 @@ def callback():
 def handle_message(event):
     # Check if user input is correct
     try:
-        result_message = get_stats(event.message.text)
+        result_message = get_stats(str(event.message.text))
     except KeyError:
         result_message = "Wrong input. Check your input"
     else:
@@ -89,6 +89,15 @@ def get_stats(user_information):
 
     rank_result = "\n".join(rank_result)
     return rank_result
+
+try:
+    result_message = get_stats("origin/ssjsakoo")
+except KeyError:
+    result_message = "Wrong input. Check your input"
+else:
+    pass
+
+print(result_message)
 
 # ポート番号の設定
 if __name__ == "__main__":
