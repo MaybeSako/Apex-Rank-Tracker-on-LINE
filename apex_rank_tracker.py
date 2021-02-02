@@ -89,8 +89,6 @@ def get_stats(user_information):
     rank_result = "\n".join(rank_result)
     return rank_result
 
-print(result_message)
-
 # ポート番号の設定
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8080))
