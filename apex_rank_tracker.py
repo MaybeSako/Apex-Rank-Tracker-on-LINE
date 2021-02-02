@@ -53,16 +53,14 @@ def callback():
 def handle_message(event):
     # Check if user input is correct
     try:
-        result_message = get_stats("origin/Ssakoo")
+        result_message = get_stats(event.message.text)
     except KeyError:
         result_message = "Wrong input. Check your input"
     else:
-        result_message = get_stats(event.message.text)
-
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=result_message)
-   )
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=result_message)
+        )
 
 def get_stats(user_information):
     base_url = "https://public-api.tracker.gg/v2/apex/standard/"
