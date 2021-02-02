@@ -52,7 +52,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     base_url = "https://public-api.tracker.gg/v2/apex/standard/"
-    endpoint = "profile/" + userinfo
+    user_information = event.message.text
+    endpoint = "profile/" + user_information
     session = requests.Session()
     req = session.get(base_url+endpoint,params=params)
     req.close()
