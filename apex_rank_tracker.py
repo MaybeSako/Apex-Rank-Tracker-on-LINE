@@ -79,12 +79,9 @@ def get_stats(user_information):
     rank_result.append("RP: " + str(ranked_point))
     rank_result.append("Rank Position: " + str(rank_position) + "位")
     # The value of percentile is occasioanlly returned as None
-    if player_percentile is None:
-        pass
-    else:
-        rank_result.append("RP Percentile: " + str(player_percentile))
-    rank_result = "\n".join(rank_result)
+    pass if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
 
+    rank_result = "\n".join(rank_result)
     return rank_result
 
 # ポート番号の設定
