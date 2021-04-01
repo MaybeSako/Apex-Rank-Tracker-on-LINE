@@ -78,13 +78,6 @@ def get_stats(user_information):
     rank_position = res["data"]["segments"][0]["stats"]["rankScore"]["rank"]
     player_percentile = res["data"]["segments"][0]["stats"]["rankScore"]["percentile"]
 
-    # Rank Points Info
-    RP_bronze = [0, 300, 600, 900, 1200]
-    RP_silver = [1200, 1600, 2000, 2400, 2800]
-    RP_gold = [2800, 3300, 3800 ,4300, 4800]
-    RP_platinum = [4800, 5400, 6000, 6600, 7200]
-    RP_diamond = [7200, 7900, 8600, 9300, 10000]
-
     rank_result = []
     rank_result.append("ID: " + str(player_id))
     rank_result.append("レベル: " + str(player_level))
@@ -99,7 +92,49 @@ def get_stats(user_information):
     rank_result = "\n".join(rank_result)
     return rank_result
 
+def calculate_rp(player_rank, ranked_point):
+    import numpy as np
+    # player_rank = "Silver 1"
+    # ranked_point = 2678
 
+    if player_rank[0] == "B":
+        RP_list = [1200, 900, 600, 300, 0]
+        if player_rank[-1] == "1":
+            next_player_rank = "Silver"
+        else:
+            next_player_rank = "Bronze"
+    elif player_rank[0] == "S":
+        RP_list = [2800, 2400, 2000, 1600, 1200]
+        if player_rank[-1] == "1":
+            next_player_rank = "Gold"
+        else:
+            next_player_rank = "Silver"
+    elif player_rank[0] == "G":
+        RP_list = [4800, 4300, 3800, 3300, 2800]
+        if player_rank[-1] == "1":
+            next_player_rank = "Platinum"
+        else:
+            next_player_rank = "Gold"
+    elif player_rank[0] == "P":
+        RP_list = [7200, 6600, 6000, 5400, 4800]
+        if player_rank[-1] == "1":
+            next_player_rank = "Diamond"
+        else:
+            next_player_rank = "Platinum"
+    elif player_rank[0] == "D":
+        RP_list = [10000, 9300, 8600, 7900, 7200]
+        if player_rank[-1] == "1":
+            next_player_rank = "Master"
+        else:
+            next_player_rank = "Diamond"
+
+# RPとリストは差分ではなく、大小で判定
+    remaining_RP = min(np.abs(np.array(RP_list) - ranked_point))
+    next_player_rank = next_player_rank + " " + str(np.argmin(np.abs(np.array(RP_list) - ranked_point)) + 1)
+
+    return("次のランク：", next_player_rank, "まで残り", remaining_RP, "RP")
+
+print(calculate_rp("Silver 1", 2478))
 
 # ポート番号の設定
 if __name__ == "__main__":
