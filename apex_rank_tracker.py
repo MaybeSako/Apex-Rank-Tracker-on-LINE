@@ -13,6 +13,7 @@ from pprint import pprint
 import sys
 import json
 import requests
+import numpy as np
 
 app = Flask(__name__)
 
