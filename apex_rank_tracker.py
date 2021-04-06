@@ -85,56 +85,54 @@ def get_stats(user_information):
 
     # np floor
     rank_result.append("RP: " + str(ranked_point))
-    rank_result.append("ランクポイント順位: " + str(rank_position) + "位")
+    # rank_result.append("ランクポイント順位: " + str(rank_position) + "位")
     # Value of percentile is occasioanlly returned as None
-    rank_result.append("パーセンタイル: Percentile is currently not available") if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
+    0 if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
 
+    rank_result.append(calculate_rp(player_rank, ranked_point))
     rank_result = "\n".join(rank_result)
     return rank_result
 
 def calculate_rp(player_rank, ranked_point):
-    import numpy as np
-    # player_rank = "Silver 1"
-    # ranked_point = 2678
-
     if player_rank[0] == "B":
         RP_list = [1200, 900, 600, 300, 0]
         if player_rank[-1] == "1":
-            next_player_rank = "Silver"
+            next_rank_title = "Silver"
         else:
-            next_player_rank = "Bronze"
+            next_rank_title = "Bronze"
     elif player_rank[0] == "S":
         RP_list = [2800, 2400, 2000, 1600, 1200]
         if player_rank[-1] == "1":
-            next_player_rank = "Gold"
+            next_rank_title = "Gold"
         else:
-            next_player_rank = "Silver"
+            next_rank_title = "Silver"
     elif player_rank[0] == "G":
         RP_list = [4800, 4300, 3800, 3300, 2800]
         if player_rank[-1] == "1":
-            next_player_rank = "Platinum"
+            next_rank_title = "Platinum"
         else:
-            next_player_rank = "Gold"
+            next_rank_title = "Gold"
     elif player_rank[0] == "P":
         RP_list = [7200, 6600, 6000, 5400, 4800]
         if player_rank[-1] == "1":
-            next_player_rank = "Diamond"
+            next_rank_title = "Diamond"
         else:
-            next_player_rank = "Platinum"
+            next_rank_title = "Platinum"
     elif player_rank[0] == "D":
         RP_list = [10000, 9300, 8600, 7900, 7200]
         if player_rank[-1] == "1":
-            next_player_rank = "Master"
+            next_rank_title = "Master"
         else:
-            next_player_rank = "Diamond"
+            next_rank_title = "Diamond"
 
-# RPとリストは差分ではなく、大小で判定
-    remaining_RP = min(np.abs(np.array(RP_list) - ranked_point))
-    next_player_rank = next_player_rank + " " + str(np.argmin(np.abs(np.array(RP_list) - ranked_point)) + 1)
-
-    return("次のランク：", next_player_rank, "まで残り", remaining_RP, "RP")
-
-print(calculate_rp("Silver 1", 2478))
+    next_rank_value = min([value for value in RP_list if value > ranked_point]) # 次のボーダーRP
+    next_rank_number = RP_list.index(next_rank_value) + 0
+    if next_rank_number == 0:
+        next_rank_number = 4
+    remaining_RP = next_rank_value - ranked_point
+    
+    goal_message = "次のランク：" + next_rank_title + " " + str(next_rank_number) + "　まで残り RP:" + str(remaining_RP)
+    return goal_message
 
 # ポート番号の設定
 if __name__ == "__main__":
