@@ -89,11 +89,13 @@ def get_stats(user_information):
     # Value of percentile is occasioanlly returned as None
     0 if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
 
-    rank_result.append(calculate_rp(player_rank, ranked_point))
+    reamining_rp, next_rank = calculate_rp(player_rank, ranked_point)
+
+    rank_result.append("次のランク：　" + reamining_rp + "まで残りRP：" + next_rank)
     rank_result = "\n".join(rank_result)
     return rank_result
 
-def calculate_rp(player_rank, ranked_point):
+def calculate_reamining_rp(player_rank, ranked_point):
     if player_rank[0] == "B":
         RP_list = [1200, 900, 600, 300, 0]
         if player_rank[-1] == "1":
@@ -125,14 +127,16 @@ def calculate_rp(player_rank, ranked_point):
         else:
             next_rank_title = "Diamond"
 
-    next_rank_value = min([value for value in RP_list if value > ranked_point]) # 次のボーダーRP
+    # 次のボーダーRPを計算する
+    next_rank_value = min([value for value in RP_list if value > ranked_point])
     next_rank_number = RP_list.index(next_rank_value) + 0
     if next_rank_number == 0:
         next_rank_number = 4
-    remaining_RP = next_rank_value - ranked_point
     
-    goal_message = "次のランク：" + next_rank_title + " " + str(next_rank_number) + "　まで残り RP:" + str(remaining_RP)
-    return goal_message
+    remaining_RP = next_rank_value - ranked_point
+    next_rank = next_rank_title + " " + str(next_rank_number)
+    
+    return remaining_RP, next_rank
 
 # ポート番号の設定
 if __name__ == "__main__":
