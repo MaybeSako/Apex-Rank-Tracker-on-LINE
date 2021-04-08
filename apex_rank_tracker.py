@@ -91,7 +91,7 @@ def get_stats(user_information):
 
     reamining_rp, next_rank = calculate_rp(player_rank, ranked_point)
 
-    rank_result.append("次のランク：　" + reamining_rp + "まで残りRP：" + next_rank)
+    rank_result.append("次のランク：　" + str(reamining_rp) + "まで残りRP：" + next_rank)
     rank_result = "\n".join(rank_result)
     return rank_result
 
