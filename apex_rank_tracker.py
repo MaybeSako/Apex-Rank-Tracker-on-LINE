@@ -89,9 +89,9 @@ def get_stats(user_information):
     # Value of percentile is occasioanlly returned as None
     0 if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
 
-    x, y = calculate_rp(player_rank, ranked_point)
+    remaining_RP, next_rank = calculate_reamining_rp(player_rank, ranked_point)
 
-    rank_result.append("次のランク：　" + str(x) + "まで残りRP：" + y)
+    rank_result.append("次のランク：　" + str(remaining_RP) + "まで残りRP：" + next_rank)
     rank_result = "\n".join(rank_result)
     return rank_result
 
@@ -130,6 +130,8 @@ def calculate_reamining_rp(player_rank, ranked_point):
     # 次のボーダーRPを計算する
     next_rank_value = min([value for value in RP_list if value > ranked_point])
     next_rank_number = RP_list.index(next_rank_value) + 0
+
+    # RP_listとrank numberと結び付ければ省略可能？
     if next_rank_number == 0:
         next_rank_number = 4
     
