@@ -89,9 +89,9 @@ def get_stats(user_information):
     # Value of percentile is occasioanlly returned as None
     0 if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
 
-    reamining_rp, next_rank = calculate_rp(player_rank, ranked_point)
+    x, y = calculate_rp(player_rank, ranked_point)
 
-    rank_result.append("次のランク：　" + str(reamining_rp) + "まで残りRP：" + next_rank)
+    rank_result.append("次のランク：　" + str(x) + "まで残りRP：" + y)
     rank_result = "\n".join(rank_result)
     return rank_result
 
