@@ -77,21 +77,20 @@ def get_stats(user_information):
     ranked_point = res["data"]["segments"][0]["stats"]["rankScore"]["value"]
     rank_position = res["data"]["segments"][0]["stats"]["rankScore"]["rank"]
     player_percentile = res["data"]["segments"][0]["stats"]["rankScore"]["percentile"]
+    remaining_RP, next_rank = calculate_reamining_rp(player_rank, ranked_point)
 
     rank_result = []
     rank_result.append("ID: " + str(player_id))
     rank_result.append("レベル: " + str(player_level))
     rank_result.append("ランク帯: " + str(player_rank))
-
     # np floor
     rank_result.append("RP: " + str(ranked_point))
+    rank_result.append("次のランク：" + str(remaining_RP) + " まで残りRP：" + next_rank)
     # rank_result.append("ランクポイント順位: " + str(rank_position) + "位")
     # Value of percentile is occasioanlly returned as None
     0 if player_percentile is None else rank_result.append("RP Percentile: " + str(player_percentile))
 
-    remaining_RP, next_rank = calculate_reamining_rp(player_rank, ranked_point)
 
-    rank_result.append("次のランク：　" + str(remaining_RP) + "まで残りRP：" + next_rank)
     rank_result = "\n".join(rank_result)
     return rank_result
 
